@@ -1,49 +1,36 @@
-# rlm-sandbox
+# sandbox-agent
 
-Implementation of [Recursive Language Models](https://arxiv.org/abs/2512.24601) (Zhang, A. L. et al., 2025) using the **Anthropic API** with isolated **E2B sandbox** execution. The agent writes and runs Python in a sandboxed REPL, iterating until it produces a final answer. Sandbox code can call `llm_call(prompt)` to query a sub-LLM mid-execution via a file-based bridge, since the sandbox has no internet access. A FastAPI/WebSocket UI streams each turn's code and output to the browser in real time.
+A lightweight `ClaudeSDKClient` agent that executes code in an isolated E2B sandbox to solve a user-defined task.
 
-<p align="center">
-  <img src="assets/demo.gif" alt="Demo" width="650">
-</p>
-
-- Zhang, A., & Khattab, O. (2025, October). *Recursive language models*. https://alexzhang13.github.io/blog/2025/rlm/
+Since the agent loop runs locally and a single `run_python` tool forwards the agent's code to the sandbox, no secrets (like `ANTHROPIC_API_KEY`) are exposed to it. The user can optionally upload local directories to `/home/user/` in the sandbox, and any files the agent writes to `/home/user/output/` (e.g., final answer markdowns, CSVs) are automatically downloaded.
 
 ## Setup
 
 Requires Python 3.12+.
 
-```bash
+​```bash
 uv sync
-```
+​```
 
 Create a `.env` file with your API keys:
 
-```
+​```
 ANTHROPIC_API_KEY=...
 E2B_API_KEY=...
-```
+​```
 
 ## Usage
 
-Start the web UI:
+Run the agent in the CLI, optionally uploading a directory into the sandbox:
+
+​```bash
+uv run python -m src.cli --task "<task>" --directory <path>
+​```
+
+The agent's transcript and any downloaded artifacts are written to `runs/<timestamp>/` in the project root. The first time this is called, E2B will build the template (which gets reused by subsequent sessions).
+
+Settings such as the Anthropic model, system prompt, and sandbox packages can be adjusted in `config.py`. When changing the sandbox packages, the template needs to be rebuilt:
 
 ```bash
-uv run python -m ui.server
-```
-
-This opens a browser at `http://127.0.0.1:8000`. Enter a project directory and task, then click **Run**.
-
-Options:
-
-```
---port PORT    Change the port (default: 8000)
---no-open      Don't auto-open the browser
-```
-
-### CLI
-
-Run the agent directly in the command line using the defaults in `config.py`:
-
-```bash
-uv run python execute.py
+uv run python -c "from src.template import build_template; build_template()"
 ```

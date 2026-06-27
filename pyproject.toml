@@ -1,7 +1,7 @@
 [project]
-name = "rlm-sandbox"
+name = "sandbox-agent"
 version = "0.1.0"
-description = "RLM-style agent with isolated E2B sandbox execution"
+description = "Agent that runs code in an isolated E2B sandbox"
 requires-python = ">=3.12"
 dependencies = [
     "e2b>=2.19.0",
@@ -9,7 +9,8 @@ dependencies = [
     "ipykernel>=7.2.0",
     "anthropic>=0.52.0",
     "python-dotenv>=1.2.2",
-    "fastapi>=0.115.0",
-    "uvicorn[standard]>=0.34.0",
+    "claude-agent-sdk>=0.2.110",
+    "rich>=15.0.0",
+    "typer>=0.26.8",
 ]
 
