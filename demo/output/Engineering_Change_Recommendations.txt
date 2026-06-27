@@ -1,0 +1,517 @@
+
+╔══════════════════════════════════════════════════════════════════════════════════════╗
+║           ENGINEERING CHANGE RECOMMENDATIONS — TOP 3 PER PRODUCT                    ║
+║           SpatialTech Industries | Analysis Date: 2026-06-27                         ║
+║           Source: 57 customer feedback entries + Product Technical Reference v4.1    ║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EXECUTIVE SUMMARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This report cross-references 57 customer feedback entries (avg. rating 3.9/5) against
+the Product Technical Reference (Doc Rev 4.1, Sep 2025) and the Q3 2025 Internal Memo
+to identify the top 3 highest-impact engineering changes per product. Each recommendation
+is ranked by: (1) frequency of customer complaints, (2) severity of impact on rating,
+(3) revenue exposure, and (4) technical feasibility.
+
+Product Portfolio Overview:
+  • Horizon X1       — 20 reviews, avg 4.32★, $389K revenue (52%), 10% negative rate
+  • HapticGlove V2   — 13 reviews, avg 3.77★, $126K revenue (16%), 23% negative rate
+  • SenseField 360   — 12 reviews, avg 4.00★, $132K revenue (18%), 25% negative rate
+  • OptiTrack Pro    — 12 reviews, avg 3.67★, $100K revenue (14%), 42% negative rate  ⚠ HIGHEST RISK
+
+Priority products by urgency: OptiTrack Pro > HapticGlove V2 > SenseField 360 > Horizon X1
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+█ PRODUCT 1: HORIZON X1  (SKU: HX1 | MSRP: $499.99 | 52% of Revenue)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #1: WEIGHT REDUCTION & STRAP REDESIGN                                        │
+│ Fix Type: COMPONENT SWAP + PARTIAL REDESIGN                                         │
+│ Impact Score: ████████░░ 8/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (4 mentions across ★3–★5 reviews):                                 │
+│  • Feedback #1  (★5, Customer 1, Vertex Labs — $48K lifetime spend):                 │
+│    "Only downside is the weight during extended four-hour sessions."                  │
+│  • Feedback #49 (★4, Customer 110): "Strap system could use work, lots of adjusting."│
+│  • Feedback #29 (★4, therapy clinic): Comfort noted as critical for 45-min sessions. │
+│  • Feedback #4  (★3, Customer 4): General ergonomic dissatisfaction.                  │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Current weight: 586g (w/ strap). Primary contributors: 5,300 mAh Li-Po battery,     │
+│  12 GB RAM, Snapdragon XR2+ Gen 2 SoC, 3-element pancake lens stack. Face interface  │
+│  is magnetic/silicone (not a major weight contributor). Enterprise customers report   │
+│  sessions of 1–4 hours — well beyond the 2.1hr standalone battery life, meaning       │
+│  users are already tethered (reducing need for large onboard battery).                │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Replace head strap with counter-balanced halo-style design to redistribute       │
+│      weight (perceived weight reduction of ~30% without changing actual mass).         │
+│  (b) Evaluate battery capacity reduction to 4,500 mAh for tethered-primary SKU       │
+│      (saves ~25g, sacrifices ~0.3hr standalone runtime).                              │
+│  (c) Investigate magnesium alloy chassis replacement for plastic housing (saves       │
+│      ~40g but increases material cost).                                               │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Strap redesign: +$8–12 BOM increase (new tooling amortized over production run)   │
+│  • Mg alloy chassis: +$15–22 per unit                                                │
+│  • Battery downsize: −$3–5 savings                                                   │
+│  • Net estimated BOM impact: +$15–29/unit                                            │
+│  • MSRP impact: Absorb at current margin OR justify with "Pro Comfort" SKU at $529   │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #2: FIRMWARE UPDATE STABILITY / ENTERPRISE ROLLBACK MECHANISM                 │
+│ Fix Type: FIRMWARE UPDATE                                                            │
+│ Impact Score: ███████░░░ 7/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (2 mentions — both from enterprise customers):                     │
+│  • Feedback #46 (★3, Customer 61 — DROPPED from ★4):                                 │
+│    "The latest firmware update (v4.1.2) broke our custom Unity integration that was   │
+│     working perfectly for months. Enterprise customers should NOT be beta testers."   │
+│  • Feedback #13 (★4, Customer 13):                                                   │
+│    "Occasional firmware updates cause compatibility hiccups with third-party apps."   │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Enterprise management via SpatialHub Console supports remote firmware push. However, │
+│  no staged rollout, rollback mechanism, or compatibility validation layer exists.     │
+│  Hand tracking requires firmware 4.0.8+, creating version-lock dependencies.         │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Implement firmware A/B partition scheme allowing instant rollback to prior       │
+│      known-good version (requires ~128MB reserved storage — trivial on 256GB).       │
+│  (b) Add enterprise firmware channel (delayed release, stability-certified) vs.      │
+│      consumer channel (latest features).                                             │
+│  (c) Ship OpenXR/Unity compatibility test suite with each firmware release.          │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Pure software/firmware change — $0 incremental BOM cost.                          │
+│  • Engineering effort: ~2–3 person-months for A/B partitioning + QA pipeline.        │
+│  • MSRP impact: None. Strengthens enterprise value proposition.                      │
+│  • Risk: Directly protects $389K revenue base (52% of total) — enterprise customers  │
+│    are the primary buyer segment and most sensitive to integration breakage.          │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #3: STANDALONE BATTERY LIFE EXTENSION                                         │
+│ Fix Type: FIRMWARE UPDATE (primary) + COMPONENT SWAP (secondary)                     │
+│ Impact Score: ██████░░░░ 6/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (3 mentions):                                                      │
+│  • Feedback #1  (★5, Customer 1): Extended 4-hour sessions imply battery inadequacy. │
+│  • Feedback #34 (★5, Customer 5): "Battery life has actually improved with firmware" │
+│    — confirms firmware optimization is viable.                                       │
+│  • Feedback #11 (★4, Customer 12): "Wish standalone processing power was stronger    │
+│    for complex scenes without PC tethering."                                         │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Battery: 5,300 mAh Li-Po → 2.1 hr standalone (90Hz, 50% brightness, Wi-Fi active). │
+│  Processor: Snapdragon XR2+ Gen 2 — fixed silicon, no swap path without full board   │
+│  redesign. USB-C PD 30W charging supports fast top-up but not hot-swap.              │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Firmware power management optimization: dynamic refresh rate switching           │
+│      (120→90→72 Hz based on content motion), aggressive Wi-Fi power save when not    │
+│      streaming, display brightness auto-dimming. Target: +25–35 min runtime.         │
+│  (b) Offer clip-on external battery pack accessory (3,000 mAh, ~60g) with           │
+│      passthrough charging via USB-C. Target: extends runtime to ~3.5 hr standalone.  │
+│  (c) Long-term: evaluate 6,000 mAh cell for next revision (adds ~30g, conflicts     │
+│      with Change #1 weight reduction goal — requires trade-off analysis).            │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Firmware optimization: $0 BOM, engineering effort only.                           │
+│  • External battery accessory: new SKU at ~$49–69 MSRP, ~$12–18 BOM.               │
+│  • MSRP impact on headset: None (accessory-based approach).                          │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+█ PRODUCT 2: HAPTICGLOVE V2  (SKU: HG2 | MSRP: $129.99 | 16% of Revenue)
+█ ⚠ WIDEST RATING VARIANCE (1★ to 5★) — QUALITY CONSISTENCY RISK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #1: BLUETOOTH CONNECTIVITY OVERHAUL                                           │
+│ Fix Type: FIRMWARE UPDATE (immediate) → COMPONENT SWAP (V3)                          │
+│ Impact Score: █████████░ 9/10  ⚡ CRITICAL                                           │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (3 mentions + internal memo acknowledgment):                       │
+│  • Feedback #6  (★2, Customer 6 — RETURNED PRODUCT):                                │
+│    "Bluetooth connection drops constantly when paired with Horizon X1. Customer       │
+│     support said it was a known firmware issue being patched but I cannot wait."      │
+│  • Feedback #42 (★4, Customer 86):                                                   │
+│    "Occasional Bluetooth hiccups in our 30-workstation lab."                          │
+│  • Q3 Memo: "Multiple feedback entries cite Bluetooth connectivity problems.         │
+│    Firmware patch (v2.6) targeting Bluetooth stability scheduled for November."       │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Protocol: Bluetooth 5.0 Classic (NOT BLE) — selected for backward compatibility     │
+│  with Horizon S3. Antenna: integrated PCB, only 2 dBi gain — "limited by glove form  │
+│  factor." Range: 8m open / 3–5m typical. Tech spec explicitly warns: "connection     │
+│  stability degrades in RF-congested environments or beyond 5m."                      │
+│  → Root cause: Classic BT + low-gain antenna + multi-device RF congestion.           │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) IMMEDIATE (Firmware v2.6): Implement adaptive frequency hopping, connection     │
+│      retry logic, and packet-loss recovery. Add BT signal strength indicator to SDK. │
+│  (b) V2 Rev B (Component Swap): Upgrade antenna to 3–4 dBi ceramic patch antenna    │
+│      within existing form factor. Estimated +$1.50/unit BOM.                         │
+│  (c) V3 (Planned): Migrate to Bluetooth 5.3 LE Audio. Spec note confirms "BLE       │
+│      upgrade planned for V3." Reduces latency from 12ms to ~8ms and improves         │
+│      congested-environment performance by 40–60%.                                    │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Firmware v2.6: $0 BOM — already in development per Q3 memo.                      │
+│  • Antenna upgrade (V2 Rev B): +$1.50/unit → MSRP absorbed (margin impact ~1.2%).   │
+│  • BLE migration (V3): already budgeted; V3 MSRP tentatively set at $179.99.        │
+│  • Revenue at risk: HapticGlove V2 had strongest Q-o-Q growth (+18%); BT issues     │
+│    threaten $126K revenue line and could stall the V3 launch narrative.              │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #2: EXPANDED SIZE RANGE (ADD XS & XL)                                         │
+│ Fix Type: PARTIAL REDESIGN (new sizing SKUs)                                         │
+│ Impact Score: ████████░░ 8/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (3 mentions — spans both ends of size spectrum):                   │
+│  • Feedback #54 (★3, Customer 88):                                                   │
+│    "I'm a woman with small hands and even the S size is loose. The finger tracking   │
+│     loses accuracy when the glove doesn't fit snugly. Please make an XS."            │
+│  • Feedback #10 (★4, Customer 30):                                                   │
+│    "Sizing runs small though, need XL option."                                       │
+│  • Feedback #26 (★4, Customer 75):                                                   │
+│    "Would be nice to have half sizes or adjustable tightening mechanism."            │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Current sizes: S (165–178mm), M (179–203mm), L (204–229mm) hand circumference.      │
+│  Tech spec explicitly notes: "No XS or XL sizes currently in production."            │
+│  Tracking accuracy spec (±2.1mm) assumes proper fit; loose fit causes sensor gap     │
+│  which degrades IMU + flex sensor readings, directly impacting core value prop.      │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Add XS size (150–164mm) and XL size (230–250mm) to production.                  │
+│  (b) Integrate adjustable Velcro/BOA dial tightening at wrist and finger bases       │
+│      to accommodate hand shape variation within each size band.                      │
+│  (c) Add in-glove fit-detection algorithm (firmware) that warns user when sensor     │
+│      contact is poor and suggests re-adjustment.                                     │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • New sizes: +$25K–40K tooling per size (one-time), +$2–3/unit BOM for              │
+│    adjustable mechanism.                                                             │
+│  • SKU complexity: 5 sizes × 2 hands = 10 SKUs (up from 6). Inventory planning      │
+│    impact is significant.                                                            │
+│  • MSRP impact: Absorb at current pricing; fit quality directly reduces returns.     │
+│    Feedback #54 shows poor fit → lost accuracy → dissatisfied customer.              │
+│  • Fit-detection firmware: $0 BOM.                                                   │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #3: DURABILITY IMPROVEMENTS (ACTUATORS + CHARGING CASE)                       │
+│ Fix Type: COMPONENT SWAP                                                             │
+│ Impact Score: ███████░░░ 7/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (2 mentions — includes lowest-rated review in entire dataset):     │
+│  • Feedback #23 (★1, Customer 62 — LOWEST RATING, requested refund):                │
+│    "Both gloves died within a month. Left glove motor burned out, right glove won't  │
+│     charge. $130 each and they feel like cheap toys."                                │
+│  • Feedback #17 (★5, Customer 22 — bulk buyer, 20 pairs):                            │
+│    "Charging case is flimsy, already cracked one."                                   │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Actuators: LRA × 5 per finger, force range 0.2–3.8N. Motor thermal limit: 65°C     │
+│  with auto-shutoff. If sustained use pushes actuators near thermal limit repeatedly, │
+│  premature motor burnout is expected (especially in high-frequency haptic scenarios   │
+│  like the "sword-fighting games" described in Feedback #10).                         │
+│  Charging case: ABS plastic, 3mm wall thickness — inadequate for daily transport.    │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Upgrade LRA actuators to units with higher thermal tolerance (80°C rated) or    │
+│      add copper thermal spreader between actuators and chassis (~$0.80/unit).        │
+│  (b) Implement firmware thermal throttling curve (reduce force output gradually at   │
+│      55°C instead of hard shutoff at 65°C) to extend actuator lifespan.             │
+│  (c) Upgrade charging case: increase ABS wall to 4.5mm OR switch to polycarbonate   │
+│      blend. Add silicone bumper corners.                                             │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Higher-rated LRA: +$2.50–4.00/unit (×5 actuators = +$12.50–20.00/glove) ⚠        │
+│    → Significant at $129.99 MSRP; may necessitate price increase or margin reduction │
+│  • Thermal spreader alternative: +$0.80/unit (much cheaper, less effective)           │
+│  • Firmware thermal throttling: $0 BOM                                               │
+│  • Case upgrade: +$1.20–2.00/unit                                                   │
+│  • RECOMMENDED PATH: Thermal spreader + firmware throttling + case upgrade            │
+│    = +$2.00–2.80/unit (absorbable at current margins)                                │
+│  • Full LRA upgrade deferred to V3 (already priced at $179.99 MSRP).                │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+█ PRODUCT 3: SENSEFIELD 360  (SKU: SF3 | MSRP: $749.99 | 18% of Revenue)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #1: Z-AXIS ACCELEROMETER UPGRADE (14-bit → 16-bit ADC)                       │
+│ Fix Type: COMPONENT SWAP                                                             │
+│ Impact Score: █████████░ 9/10  ⚡ CRITICAL                                           │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (3 mentions — includes repeat failure & lowest rating):            │
+│  • Feedback #33 (★3, Customer 51):                                                   │
+│    "Z-axis tracking drifts noticeably after a few hours of continuous use."           │
+│  • Feedback #57 (★2, Customer 51 — SAME CUSTOMER, REPEAT ISSUE):                    │
+│    "Second unit failed. Same Z-axis drift issue I reported on my first unit.         │
+│     At this point I think there's a systemic hardware defect in the Z-axis           │
+│     accelerometer."                                                                  │
+│  • This customer (ID 51) has reported the same issue on TWO separate units,          │
+│    confirming it is systemic, not a one-off defect.                                  │
+│                                                                                      │
+│ SPEC CONSTRAINT (ROOT CAUSE IDENTIFIED IN TECH SPEC):                                │
+│  Z-axis accelerometer: MEMS, ±16g, 14-bit ADC                                       │
+│  X/Y-axis accelerometer: MEMS, ±16g, 16-bit ADC                                     │
+│  IMU package: STMicro LSM6DSO32                                                      │
+│  Tech spec explicitly states: "Z-axis positional accuracy is lower than X/Y due to   │
+│  the 14-bit ADC on the Z-axis accelerometer (vs. 16-bit on X/Y). This is a KNOWN    │
+│  LIMITATION of the current IMU package... partially compensated by optical sensor     │
+│  fusion. Accuracy degrades further in volumes exceeding 10m on the Z-axis."          │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Replace STMicro LSM6DSO32 with an IMU offering uniform 16-bit ADC across all   │
+│      axes (e.g., Bosch BMI323 or TDK InvenSense ICM-42688-P).                       │
+│  (b) Interim firmware mitigation: increase optical sensor fusion weight on Z-axis    │
+│      to compensate for IMU drift; add real-time Z-drift detection and auto-          │
+│      recalibration trigger.                                                          │
+│  (c) Update marketing/spec sheet to clearly communicate Z-axis limitation until      │
+│      hardware fix ships (prevents repeat-complaint pattern seen with Customer 51).   │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • IMU swap: +$3–6/unit (comparable package footprint, minimal PCB rework).          │
+│  • Firmware interim fix: $0 BOM.                                                    │
+│  • At $749.99 MSRP, the +$3–6 increase is <1% of unit cost — easily absorbed.       │
+│  • Risk: SenseField 360 is the highest-margin product line. Z-axis issues threaten   │
+│    clinical/research credibility (medical rehab, surgical rehearsal customers).       │
+│    Customer 51 had 2 units fail — potential for escalation to clinical advisory.     │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #2: AMBIENT LIGHT TOLERANCE IMPROVEMENT                                       │
+│ Fix Type: COMPONENT SWAP + FIRMWARE UPDATE                                           │
+│ Impact Score: ███████░░░ 7/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (2 mentions):                                                      │
+│  • Feedback #8  (★4, Customer 8):                                                    │
+│    "Accuracy degrades slightly in bright sunlight near windows."                     │
+│  • Feedback #43 (★3, Customer 67):                                                   │
+│    "Unusable in our glass-walled atrium... units getting warm to the touch."         │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Recommended ambient: <500 lux. IR illumination: 850nm flood, Class 1 eye-safe.      │
+│  Tech spec: "Optical tracking performance degrades above 500 lux due to IR           │
+│  interference from ambient light sources, particularly direct sunlight."             │
+│  Typical office: 300–500 lux. Near windows/atriums: 1000–5000+ lux.                 │
+│  → System is spec'd for controlled environments but customers deploy in mixed-light. │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Add narrow bandpass optical filter (850nm ±10nm) over camera sensors to reject  │
+│      broadband ambient IR — most effective single change for light tolerance.        │
+│  (b) Firmware: implement adaptive IR illumination power (increase IR flood intensity  │
+│      to maintain signal-to-noise ratio in brighter environments, up to Class 1 max). │
+│  (c) Increase recommended operational ceiling to 1000 lux in updated spec.           │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Bandpass filter: +$4–7/unit (2 filters, one per optical sensor).                  │
+│  • Firmware adaptive IR: $0 BOM (may require characterization testing).              │
+│  • Total: +$4–7/unit at $749.99 MSRP (<1% unit cost increase).                      │
+│  • Benefit: Opens deployment to architectural/glass-walled spaces — a key market     │
+│    for enterprise simulation and clinical facilities.                                │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #3: THERMAL MANAGEMENT & SURFACE TEMPERATURE REDUCTION                        │
+│ Fix Type: COMPONENT SWAP (minor)                                                     │
+│ Impact Score: █████░░░░░ 5/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (1 direct mention + related to Change #2 environment):             │
+│  • Feedback #43 (★3, Customer 67):                                                   │
+│    "Units getting warm to the touch after a few hours."                               │
+│  • Feedback #48 (★5, Customer 78): 12-hour mocap sessions — implies thermal          │
+│    endurance matters for film production use cases.                                  │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Power draw: 18W typical / 24W peak. Surface temp: up to 58°C under sustained load. │
+│  Cooling: passive (aluminum heatsink only). Operating range: 10–35°C ambient.         │
+│  58°C surface temp is within spec but uncomfortable and potentially hazardous in     │
+│  occupied spaces (clinical, classroom). No active cooling.                           │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Add thermally conductive silicone pad between heatsink and chassis to increase  │
+│      thermal dissipation area. Target: reduce surface temp to <48°C.                 │
+│  (b) Add thermal warning LED (amber at 50°C, red at 55°C) for operator awareness.   │
+│  (c) For high-duty-cycle deployments (film production), offer optional clip-on fan   │
+│      accessory that attaches to mounting bracket.                                    │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Thermal pad: +$1.50–2.50/unit.                                                   │
+│  • Warning LED: +$0.30/unit + minor firmware work.                                   │
+│  • Fan accessory: new SKU, ~$19–29 MSRP.                                            │
+│  • MSRP impact on base unit: None (< $3 BOM increase absorbed).                     │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+█ PRODUCT 4: OPTITRACK PRO  (SKU: OTP | MSRP: $349.99 | 14% of Revenue)
+█ ⚠ LOWEST AVG RATING (3.67★) — 42% NEGATIVE REVIEW RATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #1: SOFTWARE / DATA EXPORT MODERNIZATION                                      │
+│ Fix Type: FIRMWARE UPDATE + SOFTWARE UPDATE                                          │
+│ Impact Score: █████████░ 9/10  ⚡ CRITICAL                                           │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (4 mentions — MOST CITED ISSUE for this product):                  │
+│  • Feedback #9  (★3, Customer 9):                                                    │
+│    "Data export is clunky. Had to write custom scripts to parse proprietary format." │
+│  • Feedback #41 (★3, Customer 72):                                                   │
+│    "Export options are limited (CSV only, no JSON or direct API). Software UI looks   │
+│     like it was designed in 2015. For a 'Pro' product the workflow feels amateur."   │
+│  • Feedback #25 (★3, Customer 56):                                                   │
+│    "Needed more granular pupil dilation data... had to buy $200 software addon."     │
+│  • Multiple customers writing custom parsing scripts indicates broken workflow.      │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Output formats: SpatialEye (.seye) proprietary + CSV (gaze + timestamps only).      │
+│  JSON / Direct API: "Not supported (roadmap H1 2026)" — already overdue.             │
+│  Companion App: SpatialEye Studio v3.8, built on Qt 5 (legacy).                     │
+│  CSV export EXCLUDES pupil data (requires .seye format) — forces customers into      │
+│  proprietary toolchain or expensive addons.                                          │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Ship JSON export and REST API in firmware update (was roadmapped for H1 2026   │
+│      — should be prioritized immediately as it is now past due).                     │
+│  (b) Expand CSV export to include pupil diameter, blink events, and vergence data    │
+│      — eliminate the $200 addon paywall for standard data fields.                    │
+│  (c) Begin SpatialEye Studio UI rewrite (Qt 5 → Qt 6/modern framework). Tech spec   │
+│      confirms this is already planned for 2026 — accelerate timeline.               │
+│  (d) Publish open-source Python/R parsing libraries for .seye format as interim.     │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • All software/firmware changes — $0 BOM impact.                                   │
+│  • Revenue trade-off: eliminating $200 addon recovers goodwill but loses addon       │
+│    revenue stream. Net positive: prevents customer churn at $349.99/unit.            │
+│  • Engineering effort: ~3–4 person-months for JSON API + CSV expansion.              │
+│  • MSRP impact: None. Pure value-add to existing hardware.                           │
+│  • URGENCY: OptiTrack Pro has the worst review profile (42% negative). This is       │
+│    the single highest-ROI change across the entire portfolio.                        │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #2: BATTERY CAPACITY + FUEL GAUGE ACCURACY                                    │
+│ Fix Type: COMPONENT SWAP                                                             │
+│ Impact Score: ███████░░░ 7/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (2 mentions):                                                      │
+│  • Feedback #5  (★4, Customer 5 — repeat buyer, education sector):                   │
+│    "Battery life could be better. We have to swap units midway through a three-hour  │
+│     workshop."                                                                       │
+│  • Feedback #55 (★4, Customer 46 — research hospital, 4 VR therapy rooms):           │
+│    "Wish the battery indicator was more accurate — it jumps from 30% to dead with    │
+│     no warning."                                                                     │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Battery: 920 mAh Li-Po → 3.8 hr (standard) / 2.1 hr (lab mode).                    │
+│  Battery indicator: "3-segment LED (30/60/100%)" — only 3 thresholds.                │
+│  Tech spec warns: "3-threshold system... intermediate charge states are estimated    │
+│  and may not reflect actual remaining capacity linearly."                            │
+│  → 3-segment LED is fundamentally inadequate for clinical/research use where          │
+│    session planning depends on accurate remaining runtime.                           │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Replace 3-segment LED with coulomb-counting fuel gauge IC (e.g., TI BQ27441)   │
+│      and expose percentage via USB/API to companion software. Enables accurate       │
+│      remaining-time estimates.                                                       │
+│  (b) Increase battery to 1,200 mAh (target: 5+ hr standard mode) — covers           │
+│      3-hour workshops without swapping.                                              │
+│  (c) Add low-battery warning at 15% and 5% via LED blink pattern + API event.        │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Fuel gauge IC: +$0.80–1.20/unit.                                                  │
+│  • 1,200 mAh battery (vs 920 mAh): +$2.50–4.00/unit, ~2–3g weight increase.        │
+│  • Total BOM impact: +$3.30–5.20/unit at $349.99 MSRP (1.0–1.5%).                  │
+│  • MSRP impact: Absorb — addresses a top complaint from repeat enterprise buyers.    │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│ CHANGE #3: FULL-FEATURE 240 Hz SAMPLING MODE                                         │
+│ Fix Type: FIRMWARE UPDATE (partial) + COMPONENT SWAP (full solution)                  │
+│ Impact Score: ██████░░░░ 6/10                                                        │
+├──────────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                      │
+│ CUSTOMER EVIDENCE (2 mentions — includes lowest-rated OptiTrack review):             │
+│  • Feedback #30 (★2, Customer 92):                                                   │
+│    "Bought this specifically for 240Hz sampling rate but it only hits that in 'lab   │
+│     mode' which disables half the features. Feels like false advertising."           │
+│  • Feedback #15 (★4, Customer 7 — repeat buyer):                                    │
+│    "Wish the sampling rate was higher for fast-paced action sequences."              │
+│                                                                                      │
+│ SPEC CONSTRAINT:                                                                     │
+│  Camera: Dual IR, 200 Hz native. Standard mode: 120 Hz (all features).               │
+│  Lab mode: 240 Hz (gaze only — disables pupillometry, blink detection, vergence).    │
+│  The 240 Hz figure requires computational trade-offs: the onboard processor cannot   │
+│  run pupil detection algorithms at >120 Hz with current firmware/silicon.            │
+│                                                                                      │
+│ RECOMMENDED ENGINEERING CHANGES:                                                     │
+│  (a) Firmware optimization: implement selective feature enable at 240 Hz — allow     │
+│      pupillometry OR blink detection (not both) at 240 Hz, giving users more         │
+│      granular control vs. the current all-or-nothing toggle.                         │
+│  (b) Update marketing materials to clearly distinguish Standard (120 Hz, all         │
+│      features) vs. Lab (240 Hz, gaze-only) to prevent "false advertising" perception.│
+│  (c) Next hardware revision: upgrade to more capable processing (e.g., dedicated     │
+│      DSP or FPGA co-processor) to enable full-feature 240 Hz. This is a full         │
+│      REDESIGN of the processing pipeline.                                            │
+│                                                                                      │
+│ COST IMPACT:                                                                         │
+│  • Firmware selective-feature mode: $0 BOM.                                          │
+│  • Marketing/documentation update: $0 BOM.                                           │
+│  • DSP co-processor (next revision): +$8–15/unit, potentially justifying MSRP       │
+│    increase to $379–399.                                                             │
+│  • Near-term path: firmware + marketing fixes cost nothing and address the immediate │
+│    perception problem.                                                               │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+IMPLEMENTATION PRIORITY MATRIX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+PRIORITY  PRODUCT          CHANGE                           FIX TYPE         BOM IMPACT   TIMELINE
+──────────────────────────────────────────────────────────────────────────────────────────────────────
+  P0 ⚡   OptiTrack Pro    Software/Data Export Overhaul     Firmware/SW      $0           8–12 wks
+  P0 ⚡   HapticGlove V2   Bluetooth Stability (FW v2.6)    Firmware         $0           In progress
+  P1      SenseField 360   Z-Axis IMU Upgrade               Component Swap   +$3–6       Next prod run
+  P1      Horizon X1       Firmware Rollback Mechanism       Firmware         $0           6–8 wks
+  P1      OptiTrack Pro    Battery + Fuel Gauge Upgrade      Component Swap   +$3–5       Next prod run
+  P2      HapticGlove V2   Add XS/XL Sizes                  Partial Redesign +$2–3 + tooling  3–6 mos
+  P2      SenseField 360   Ambient Light Tolerance           Comp Swap + FW   +$4–7       Next prod run
+  P2      Horizon X1       Weight/Strap Redesign             Comp Swap + Design +$15–29   6–9 mos
+  P2      HapticGlove V2   Durability (Thermal + Case)       Component Swap   +$2–3       Next prod run
+  P3      OptiTrack Pro    Full-Feature 240 Hz               FW (partial), Redesign (full)  Varies
+  P3      Horizon X1       Battery Life Extension            Firmware + Accessory  $0–$18  3–6 mos
+  P3      SenseField 360   Thermal Management                Component Swap   +$2–3       Next prod run
+
+KEY INSIGHT: 5 of the 12 recommended changes are pure firmware/software updates with 
+$0 BOM impact. These should be fast-tracked as they deliver maximum customer satisfaction 
+improvement at zero marginal hardware cost.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

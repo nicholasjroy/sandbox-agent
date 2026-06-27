@@ -1,24 +1,23 @@
-import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-SANDBOX_WORKDIR = "/home/user/project"
-SANDBOX_TEMPLATE = "rlm-sandbox"
+PROJECT_DIR = Path(__file__).parent
 
-LLM_MODEL = "claude-sonnet-4-20250514"
-LLM_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-LLM_MAX_TOKENS = 4096
+SANDBOX_TEMPLATE_NAME = "sandbox-agent"
+SANDBOX_PACKAGES = ["PyPDF2"]
 
+LLM_MODEL = "claude-opus-4-6"
 MAX_TURNS = 30
-STDOUT_LIMIT = 8000
-TRACEBACK_LIMIT = 5000
 
-DEFAULT_DIRECTORY = Path(__file__).parent / "demo_dir"
-DEFAULT_TASK = (
-    "Using the customer feedback data and product technical specs, identify the top 3 engineering changes per product that would address the most impactful customer complaints. "
-    "For each recommendation, cite the relevant feedback, point to the spec constraint causing the issue, estimate whether the fix is a firmware update, component swap, or full redesign, "
-    "and flag any likely impact on unit cost or MSRP."
-)
+SYSTEM_PROMPT = """\
+You are an assistant operating a stateful Python REPL (a Jupyter kernel) inside an isolated sandbox.
+
+You execute code by calling the `run_python` tool with a Python code block passed as a string.
+
+Solve the user's task. The user may upload files or directories to /home/user/. Save any requested artifacts to /home/user/output/, which will be downloaded from the sandbox after completion.
+
+A broad data-science stack is preinstalled (pandas, numpy, matplotlib, etc.). The sandbox does not have internet access, so you cannot install new packages. If you are unsure whether a package is available, just try importing it.
+"""
