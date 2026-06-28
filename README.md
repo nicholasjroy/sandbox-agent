@@ -8,24 +8,24 @@ Since the agent loop runs locally and a single `run_python` tool forwards the ag
 
 Requires Python 3.12+.
 
-​```bash
+```bash
 uv sync
-​```
+```
 
 Create a `.env` file with your API keys:
 
-​```
+```
 ANTHROPIC_API_KEY=...
 E2B_API_KEY=...
-​```
+```
 
 ## Usage
 
 Run the agent in the CLI, optionally uploading a directory into the sandbox:
 
-​```bash
+```bash
 uv run python -m sandbox_agent.cli --task "<task>" --directory <path>
-​```
+```
 
 The agent's transcript and any downloaded artifacts are written to `runs/<timestamp>/` in the project root. The first time this is called, E2B will build the template (which gets reused by subsequent sessions).
 
