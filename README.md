@@ -1,6 +1,6 @@
 # sandbox-agent
 
-A lightweight `ClaudeSDKClient` agent that executes code in an isolated E2B sandbox to solve a user-defined task.
+Lightweight `ClaudeSDKClient` agent that executes code in an isolated E2B sandbox to solve a user-defined task.
 
 Since the agent loop runs locally and a single `run_python` tool forwards the agent's code to the sandbox, no secrets (like `ANTHROPIC_API_KEY`) are exposed to it. The user can optionally upload local directories to `/home/user/` in the sandbox, and any files the agent writes to `/home/user/output/` (e.g., final answer markdowns, CSVs) are automatically downloaded.
 
