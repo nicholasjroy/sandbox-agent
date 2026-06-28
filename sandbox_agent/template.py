@@ -1,6 +1,6 @@
 from e2b import Template, default_build_logger
 
-from config import SANDBOX_PACKAGES, SANDBOX_TEMPLATE_NAME
+from sandbox_agent.config import SANDBOX_PACKAGES, SANDBOX_TEMPLATE_NAME
 
 
 def build_template() -> None:

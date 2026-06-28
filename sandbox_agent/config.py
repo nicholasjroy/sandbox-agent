@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PROJECT_DIR = Path(__file__).parent
+PROJECT_DIR = Path(__file__).resolve().parent.parent
 
 SANDBOX_TEMPLATE_NAME = "sandbox-agent"
 SANDBOX_PACKAGES = ["PyPDF2"]

@@ -24,13 +24,13 @@ E2B_API_KEY=...
 Run the agent in the CLI, optionally uploading a directory into the sandbox:
 
 ​```bash
-uv run python -m src.cli --task "<task>" --directory <path>
+uv run python -m sandbox_agent.cli --task "<task>" --directory <path>
 ​```
 
 The agent's transcript and any downloaded artifacts are written to `runs/<timestamp>/` in the project root. The first time this is called, E2B will build the template (which gets reused by subsequent sessions).
 
-Settings such as the Anthropic model, system prompt, and sandbox packages can be adjusted in `config.py`. When changing the sandbox packages, the template needs to be rebuilt:
+Settings such as the Anthropic model, system prompt, and sandbox packages can be adjusted in `sandbox_agent/config.py`. When changing the sandbox packages, the template needs to be rebuilt:
 
 ```bash
-uv run python -c "from src.template import build_template; build_template()"
+uv run python -c "from sandbox_agent.template import build_template; build_template()"
 ```

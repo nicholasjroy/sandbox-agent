@@ -4,10 +4,10 @@ from pathlib import Path
 
 import typer
 
-from config import PROJECT_DIR
-from src.agent import run_agent
-from src.sandbox import download_outputs, sandbox_session, upload_dir
-from src.template import ensure_template
+from sandbox_agent.config import PROJECT_DIR
+from sandbox_agent.agent import run_agent
+from sandbox_agent.sandbox import download_outputs, sandbox_session, upload_dir
+from sandbox_agent.template import ensure_template
 
 app = typer.Typer(add_completion=False)
 

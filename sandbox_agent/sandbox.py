@@ -5,7 +5,7 @@ from pathlib import Path, PurePosixPath
 from e2b import FileType
 from e2b_code_interpreter import AsyncSandbox
 
-from config import SANDBOX_TEMPLATE_NAME
+from sandbox_agent.config import SANDBOX_TEMPLATE_NAME
 
 SANDBOX_TIMEOUT = 3_600  # 1hr
 

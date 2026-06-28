@@ -13,8 +13,8 @@ from rich.panel import Panel
 from rich.rule import Rule
 from rich.syntax import Syntax
 
-from config import LLM_MODEL, MAX_TURNS, SYSTEM_PROMPT
-from src.tools import build_mcp
+from sandbox_agent.config import LLM_MODEL, MAX_TURNS, SYSTEM_PROMPT
+from sandbox_agent.tools import build_mcp
 
 
 def _flatten_text(content) -> str:
