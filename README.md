@@ -24,7 +24,7 @@ E2B_API_KEY=...
 Run the agent in the CLI, optionally uploading a directory into the sandbox:
 
 ```bash
-uv run python -m sandbox_agent.cli --task "<task>" --directory <path>
+uv run python -m sandbox_agent.cli --task "Analyze the sales data and produce a dashboard" --directory "path/to/your/files"
 ```
 
 The agent's transcript and any downloaded artifacts are written to `runs/<timestamp>/` in the project root. The first time this is called, E2B will build the template (which gets reused by subsequent sessions).
